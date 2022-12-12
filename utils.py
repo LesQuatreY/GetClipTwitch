@@ -12,3 +12,11 @@ def get_token(params_for_token = {
     data={"grant_type": "client_credentials"},
     auth=(params_for_token.get("client_id"),params_for_token.get("client_secret"))
     ).json()
+
+def markdown(text, center=False, size="30px", color=None):
+    import streamlit as st
+    text_to_center = ("<div style='text-align:center';>", "</div>") if center else ("", "")
+    st.markdown(
+        f"{text_to_center[0]}<span style='font-size:{size};color:{color};'>{text}</span>{text_to_center[1]}",
+        unsafe_allow_html=True
+    )

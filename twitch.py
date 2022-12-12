@@ -26,13 +26,13 @@ class GetClip:
             ).text
         )['data'][0]['id']
 
-    def url_best_clip_streamer(self,name_streamer,params, top=1):
+    def url_best_clip_streamer(self,name_streamer,params,top=1):
         if params: et="&" 
         else: et=""
         return json.loads(self._request(
                 f"https://api.twitch.tv/helix/clips?broadcaster_id={self._get_id_streamer(name_streamer)}{et}",
                 params=params
-            ).text)['data'][top].get("url")
+            ).text)['data'][:top]#.get("url")
 
     def _get_id_game(self, name_game):
         return json.loads(
@@ -41,9 +41,12 @@ class GetClip:
             ).text
             )['data'][0]['id']
 
-    def url_best_clip_game(self, name_game, top=1):
+    def url_best_clip_game(self,name_game,params,top=1):
+        if params: et="&" 
+        else: et=""
         return json.loads(
             self._request(
-                f"https://api.twitch.tv/helix/clips?game_id={self._get_id_game(name_game)}&started_at=2022-12-10T19:59:01Z&ended_at=2022-12-10T23:00:00Z"
+                f"https://api.twitch.tv/helix/clips?game_id={self._get_id_game(name_game)}{et}",
+                params=params
             ).text
-        )['data'][top].get("url")
+        )['data'][:top]#.get("url")
