@@ -27,8 +27,7 @@ class GetClip:
         )['data'][0]['id']
 
     def url_best_clip_streamer(self,name_streamer,params,top=1):
-        if params: et="&" 
-        else: et=""
+        et="&" if params else "" 
         return json.loads(self._request(
                 f"https://api.twitch.tv/helix/clips?broadcaster_id={self._get_id_streamer(name_streamer)}{et}",
                 params=params
@@ -42,8 +41,7 @@ class GetClip:
             )['data'][0]['id']
 
     def url_best_clip_game(self,name_game,params,top=1):
-        if params: et="&" 
-        else: et=""
+        et="&" if params else ""  
         return json.loads(
             self._request(
                 f"https://api.twitch.tv/helix/clips?game_id={self._get_id_game(name_game)}{et}",
