@@ -17,12 +17,24 @@ if option=="Streameur":
     top = st.sidebar.number_input(
         "Le top combien du clip le plus vu ?", step=1, value=1
         )
-    params = {}
 
-    datestart = st.sidebar.text_input("Date du début (AAAA-MM-JJTHH:MM:SSZ)")
-    if datestart != "": params["started_at"] = datestart
-    dateend = st.sidebar.text_input("Date de fin (AAAA-MM-JJTHH:MM:SSZ)")
-    if dateend != "": params["ended_at"] = dateend
+    markdown("Date du début :", center=True, sidebar=True, size="20px")
+    cols = st.sidebar.columns([1,2])
+    with cols[0]:
+        datestart = st.date_input("Date :", key="Dstart")
+    with cols[1]:
+        hourstart = st.time_input("Heure :", key="Hstart")
+        
+    markdown("Date de fin :", center=True, sidebar=True, size="20px")
+    cols = st.sidebar.columns([1,2])
+    with cols[0]:
+        dateend = st.date_input("Date :", key="Dend")
+    with cols[1]:
+        hourend = st.time_input("Heure :", key="Hend")
+
+    params = {}
+    if (datestart != "")&(hourstart != ""): params["started_at"] = str(datestart) + "T" + str(hourstart) + "Z"
+    if (dateend != "")&(hourend != ""): params["ended_at"] = str(dateend) + "T" + str(hourend) + "Z"
 
     for i in range(top):
         markdown(text=f"Top {i+1}", center=True, size="30px")
@@ -30,7 +42,7 @@ if option=="Streameur":
             f"Title : {getclip.url_best_clip_streamer(streamer_name, top=top, params=params)[i].get('title')}", 
             size="15px"
             )
-        st.write(getclip.url_best_clip_streamer(streamer_name, top=top, params=params)[i].get("url"))
+        markdown(getclip.url_best_clip_streamer(streamer_name, top=top, params=params)[i].get("url"))
 
 elif option=="Catégorie du jeu":
     game_name = st.sidebar.text_input("Entrer la catégorie du jeu :")
@@ -39,15 +51,32 @@ elif option=="Catégorie du jeu":
     top = st.sidebar.number_input(
         "Le top combien du clip le plus vu ?", step=1, value=1
         )
+
+    markdown("Date du début :", center=True, sidebar=True, size="20px")
+    cols = st.sidebar.columns([1,2]) #(AAAA-MM-JJTHH:MM:SSZ)
+    with cols[0]:
+        datestart = st.date_input("Date :", key="Dstart", value=None)
+    with cols[1]:
+        hourstart = st.time_input("Heure :", key="Hstart", value=None)
+        
+    markdown("Date de fin :", center=True, sidebar=True, size="20px")
+    cols = st.sidebar.columns([1,2])
+    with cols[0]:
+        dateend = st.date_input("Date :", key="Dend", value=None)
+    with cols[1]:
+        hourend = st.time_input("Heure :", key="Hend", value=None)
+
     params = {}
+    if (datestart != "")&(hourstart != ""): params["started_at"] = str(datestart) + "T" + str(hourstart) + "Z"
+    if (dateend != "")&(hourend != ""): params["ended_at"] = str(dateend) + "T" + str(hourend) + "Z"
 
-    datestart = st.sidebar.text_input("Date du début (AAAA-MM-JJTHH:MM:SSZ)")
-    if datestart != "": params["started_at"] = datestart
-    dateend = st.sidebar.text_input("Date de fin (AAAA-MM-JJTHH:MM:SSZ)")
-    if dateend != "": params["ended_at"] = dateend
-
-    st.title("Clip le plus vu pour le streamer :")
-    st.write(getclip.url_best_clip_game(game_name, top=top, params=params))
+    for i in range(top):
+        markdown(text=f"Top {i+1}", center=True, size="30px")
+        markdown(
+            f"Title : {getclip.url_best_clip_game(game_name, top=top, params=params)[i].get('title')}", 
+            size="15px"
+            )
+        markdown(getclip.url_best_clip_game(game_name, top=top, params=params)[i].get("url"), size="15px")
 
     # st.video(
     #     getclip.url_best_clip_game(game_name)
@@ -55,8 +84,8 @@ elif option=="Catégorie du jeu":
 
 # st.write("Affichage de la vidéo")
 # st.video(
-#     "https://www.twitch.tv/videos/1674565174?t=4h5m19s",
-#     #format="video/mp"
+#     "https://www.youtube.com/watch?v=woRskojCCRU",
+#     format="video/3gpp2"
 #     )
 
 #https://clips.twitch.tv/ThoughtfulPhilanthropicYakinikuDBstyle-l0vdnziKRWGRQcoF
